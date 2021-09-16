@@ -58,7 +58,13 @@ label{
 			var id = $('#id').val();
 			var name = $('#name').val();
 			var resi = $('#resi').val();
-			alert(id+name+resi);
+			var pw = $('#pwCheck').val();
+			var email = $('#email').val();
+			var addr1 = $('#addr1').val();
+			var addr2 = $('#addr2').val();
+			var addr3 = $('#addr3').val();
+			var tel = $('#tel').val();
+			alert(id+name+resi+pw+email+addr1+addr2+addr3+tel);
 		});
 		
 		//id 정규표현식
@@ -123,8 +129,21 @@ label{
 		//주소 팝업창 오픈
  		$('#addrBtn').click(function goPopup(){
  			var pop = window.open("/trip/popup/jusoPopup.tr","pop","width=570,height=420, scrollbars=yes, resizable=yes");	
- 				
  		});
+		
+		//전화번호 이벤트
+		
+		$('#tel').keyup(function(){
+		
+ 		 	var selection = window.getSelection().toString();
+ 		    if ( selection !== '' ) {
+ 		        return;
+ 		    }
+ 			var phone = $(this).val()
+ 			
+ 			res = phone.replace(/-/g, '').replace(/(\d{2,3})(\d{3,4})(\d{4})/g, '$1-$2-$3');
+ 			$(this).val(res); 
+		})
 		
 	});
 	
@@ -196,7 +215,7 @@ label{
 			<div class="mgt10 mgb10 ">
 				<label class="mgr10">주소:</label>
 				<input type="text" name="addr1"class="w3-border mgl50" id="addr1">
-				<input type="button" value="우편번호" id="addrBtn" >
+				<input type="button" value="우편번호" id="addrBtn" placeholder="우편번호">
 			</div>
 			<div class="mgt10 mgb10 mgl60 pdl40">
 				<input type="text" name="addr2" class="w3-border" id="addr2">
@@ -204,8 +223,7 @@ label{
 			</div>
 			<div class="mgt10 mgb20 w3-col">
 				<label class="mgr30">전화번호:</label>
-				<input type="text" class="w3-border" id="tel">
-				<input type="button" class="w3-border check" value="인증하기" id="telCheck">
+				<input type="text" class="w3-border" id="tel" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
 			</div>
 		</div>
 		<div class="inblock mgl60 mgt20">
