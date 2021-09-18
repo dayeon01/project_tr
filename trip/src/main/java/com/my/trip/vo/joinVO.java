@@ -1,9 +1,12 @@
 package com.my.trip.vo;
 
+import java.sql.Date;
+
 public class joinVO {
 
 	private int mno;
-	private String name, id, pw, tel, mail, addr1, addr2, addr3, jdate;
+	private String name, id, pw, tel, mail, addr1, addr2, addr3, joindate;
+	private Date jdate;
 	public int getMno() {
 		return mno;
 	}
@@ -58,12 +61,20 @@ public class joinVO {
 	public void setAddr3(String addr3) {
 		this.addr3 = addr3;
 	}
-	public String getJdate() {
+	public String getJoindate() {
+		return joindate;
+	}
+	public void setJoindate(String joindate) {
+		this.joindate = joindate;
+	}
+	public Date getJdate() {
 		return jdate;
 	}
-	public void setJdate(String jdate) {
+	public void setJdate(Date jdate) {
 		this.jdate = jdate;
 	}
+	
+	
 	
 	
 }

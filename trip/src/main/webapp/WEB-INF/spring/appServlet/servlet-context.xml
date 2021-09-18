@@ -11,7 +11,11 @@
 						https://www.springframework.org/schema/context/spring-context.xsd
 						http://www.springframework.org/schema/aop
 						https://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
-
+	<!-- 
+		클라이언트의 요청과 관련된 객체를 정의한다. 
+		controller, @annotation,ViewResolver, interceptor, MultipartResolver 등의 설정을 한다.
+	-->
+	
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
 	<!-- Enables the Spring MVC @Controller programming model -->
@@ -37,8 +41,10 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
+	<!--  루트 컨테이너 또는 서블릿용 컨테이너를 생성할 때 어노테이션을 검색하기 때문에, 
+		컨테이너 생성 시 참조하는 xml 파일에 아래와 같은 어노테이션 스캔 설정이 존재해야 한다. -->
 	<context:component-scan base-package="com.my.trip" />
 	
-	
+	<!--  <mvc:annotation-driven /> -->
 	
 </beans:beans>

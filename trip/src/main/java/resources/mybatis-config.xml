@@ -13,17 +13,17 @@
 	</settings>
 	
 	<!-- 마이바티스에서 사용할 자바 VO 파일 별칭 선언 -->
-	<!-- 
 	 <typeAliases>
-		<typeAlias alias="fVO" type="com.biz.choi.vo.FileVO" />
-		
+		<typeAlias alias="jVO" type="com.my.trip.vo.joinVO" />
+	<!-- 
 		<typeAlias alias="file" type="com.biz.choi.util.FileUtil" />
 		<typeAlias alias="page" type="com.biz.choi.util.PageUtil" />
-	</typeAliases>	 --> 
+ 	--> 
+	</typeAliases>
 	
 	<!-- 질의명령 파일 불러오기 -->
-	<!-- <mappers>
-		<mapper resource="com/choi/dy/sql/BoardSQL.xml" />
-	</mappers> -->
+	<mappers>
+		<mapper resource="com/my/trip/sql/MemberSQL.xml" />
+	</mappers>
 	
 </configuration>

@@ -5,10 +5,42 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	<mapper namespace="mSQL">
 	
-	<!-- 회원가입 질의명령 insert-->
-<!-- 	<insert id="joinMemb" parameterType="mVO">
 	
-	</insert> -->
+	<!-- id,mail,tel 중복검사 -->
+	<select id="ukCheck" resultType="int" parameterType="jVO">
+		SELECT
+			count(*)
+		FROM
+			member
+			<choose>
+		<when test="id =='id'">
+			id = #{id}
+		</when>	
+		<when test="tel == 'tel'">
+			tel = #{tel}
+		</when>
+		<when test="mail == 'mail'">
+			email = #{email}
+		</when>
+			</choose>		
+	</select>
+	
+	
+	<!-- 회원가입 질의명령 insert-->
+	<insert id="joinMemb" parameterType="jVO">
+		<selectKey keyProperty="mno" resultType="int" order="BEFORE">
+			SELECT
+				NVL(MAX(evtno) + 1, 10001)
+			FROM
+				member
+		</selectKey>
+		INSERT INTO
+			member(mno, name, id, pw, tel, mail, addr1, addr2, add3, jdate)
+		VALUES(
+			#{mno}, #{name}, #{id}, #{pw}, #{tel}, #{mail}, #{addr1}, #{addr2}, #{addr3}
+			,TO_DATE(#{joindate}),'yyyy-MM-dd')
+		)	
+	</insert> 
 	
 	</mapper>
 	

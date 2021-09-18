@@ -45,7 +45,7 @@ label{
 		$('.ms').css("display","none");
 		
 		$('#main').click(function(){
-			$('#frm').submit();
+			$('#main').submit();
 		});
 		$('#join').click(function(){
 			location.href="/trip/menu_top/join.tr";
@@ -53,8 +53,8 @@ label{
 		$('#login').click(function(){
 			location.href="/trip/menu_top/login.tr";
 		});
-		$('#jbtn').click(function(){
-			/* var id = $('#id').prop('value'); */
+	/* 	$('#jbtn').click(function(){
+			<!-- var id = $('#id').prop('value'); -->
 			var id = $('#id').val();
 			var name = $('#name').val();
 			var resi = $('#resi').val();
@@ -65,7 +65,10 @@ label{
 			var addr3 = $('#addr3').val();
 			var tel = $('#tel').val();
 			alert(id+name+resi+pw+email+addr1+addr2+addr3+tel);
-		});
+		}); */
+		
+		
+		
 		
 		//id 정규표현식
 		function idCheck(){
@@ -82,6 +85,33 @@ label{
 			}  
 		})
 		
+			//id중복검사 ajax
+		$('#idCheck').click(function(){
+			var check = 0;
+			var request =$.ajax({
+				url: "/trip/menu_top/ukCheck.tr",
+				method:"POST",
+				data:{len: $('#id').val()},
+				dataType: "json"
+			});
+			
+		request.done(function(data){
+				console.log(data);
+			if(data != undefined && data !=''){
+				if(data.result = "Y"){
+					alert('사용 가능한 아이디 입니다.');
+					check++;
+				}else{
+					alert('사용 불가능한 아이디 입니다.');
+				}
+			}
+		});
+		
+		request.fail(function(jqXHR, textStatus, error){
+			  alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error)
+
+		});
+	});
 		//pw 정규표현식
 			function pwCheck(){
 			var pw = $('#pw').val();
@@ -108,11 +138,7 @@ label{
 					}
 				}
 		})
-		//ajax
-		$('#idCheck').click(function(){
-			var id = $('#id').val();
-			
-		})
+	
 		
 		//주민번호 이밴트
 		$('#resi').keyup(function(){
@@ -145,7 +171,56 @@ label{
  			$(this).val(res); 
 		})
 		
+		
+	
+		
+		
 	});
+	//test
+	function submit(){
+		var id = $('#id').val();
+		var name = $('#name').val();
+		var resi = $('#resi').val();
+		var pw = $('#pwCheck').val();
+		var email = $('#email').val();
+		var addr1 = $('#addr1').val();
+		var addr2 = $('#addr2').val();
+		var addr3 = $('#addr3').val();
+		var tel = $('#tel').val();
+		alert(id+name+resi+pw+email+addr1+addr2+addr3+tel);
+		
+		if($('#id').val() == ''){
+			alert('아이디를 입력하세요.');
+			return;
+		}else if($('#name').val() == ''){
+			alert('이름을 입력하세요.');
+			return;
+		}else if($('#resi').val() == ''){
+			alert('주민번호를 입력하세요');
+			return;
+		}else if($('#pw').val() == ''){
+			alert('비밀번호를 입력하세요');
+			return;
+		}else if($('#pwCheck').val() == ''){
+			alert('비밀번호 확인을 입력하세요');
+			return;
+		}else if($('#email').val() == ''){
+			alert('이메일을 입력하세요');
+			return;
+		}else if($('#emailAdd option:selected').length == 0){
+			alert('메일 주소를 선택해주세요.');
+			return;
+		}else if($('.addr').val() == ''){
+			alert('주소를 입력하세요.');
+			return;
+		}else if($('#tel').val() == ''){
+			alert('전화번호를 입력하세요.');
+			return;
+		}else{
+			alert('회원가입 완료');
+		}
+	};
+	
 	
 	function jusoCallBack(roadAddrPart1,addrDetail, zipNo){
 		$('#addr1').val(zipNo);
@@ -155,7 +230,7 @@ label{
 </script>
 </head>
 <body>
-<form method="POST" action="/trip/main/main.tr" id="frm"></form>
+<form method="POST" action="/trip/main/main.tr" id="main"></form>
 
 	<div class="w3-col mgt0 mgb60">
 		<ul class="w3-col mgt0 pdt20 h50 w3-light-grey menuTop" >
@@ -166,6 +241,7 @@ label{
 			<li class="inblock w3-left mgl20 mgr50 w3-text-purple" id="main"><strong>TRIP</strong></li>
 		</ul>
 	</div>
+<form action="/joinProc.tr" method="post" id="frm" name="frm">
 	
 	<div class="w3-content">
 		<div class="mgt0 mgb60 mgl60 ">
@@ -175,7 +251,7 @@ label{
 			</div>
 			<div class="mgt10 mgb20 w3-col">
 				<label class="mgr30">주민번호:</label>
-				<input type="text" class="w3-border" id="resi">
+				<input type="text" class="w3-border" id="resi" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
 			</div> 
 			<div class="mgt10 mgb20 w3-col">
 				<label class="mgr50">아이디:</label>
@@ -202,24 +278,24 @@ label{
 			<div class="mgt10 mgb20 inblock">
 				<label class="mgr50">이메일:</label>
 				<input type="email" class="w3-border" id="email">
-				<label class="">@</label>
-				<select name="emailAdd">
+				<label >@</label>
+				<select name="emailAdd" id="emailAdd">
 					<option value="">이메일 선택</option>
-					<option value="">naver.com</option>
-					<option value="">hanmail.net</option>
-					<option value="">daum.net</option>
-					<option value="">google.com</option>
-					<option value="">gmail.com</option>
+					<option value="01">naver.com</option>
+					<option value="02">hanmail.net</option>
+					<option value="03">daum.net</option>
+					<option value="04">google.com</option>
+					<option value="05">gmail.com</option>
 				</select>
 			</div>
 			<div class="mgt10 mgb10 ">
 				<label class="mgr10">주소:</label>
-				<input type="text" name="addr1"class="w3-border mgl50" id="addr1">
+				<input type="text" name="addr1"class="w3-border mgl50 addr"  id="addr1">
 				<input type="button" value="우편번호" id="addrBtn" placeholder="우편번호">
 			</div>
 			<div class="mgt10 mgb10 mgl60 pdl40">
-				<input type="text" name="addr2" class="w3-border" id="addr2">
-				<input type="text" name="addr3" class="w3-border" id="addr3">
+				<input type="text" name="addr2" class="w3-border addr" id="addr2">
+				<input type="text" name="addr3" class="w3-border addr" id="addr3">
 			</div>
 			<div class="mgt10 mgb20 w3-col">
 				<label class="mgr30">전화번호:</label>
@@ -227,8 +303,9 @@ label{
 			</div>
 		</div>
 		<div class="inblock mgl60 mgt20">
-			<input type="button" id="jbtn" value="JOIN">
+			<input type="button" onclick="submit()" id="jbtn" value="JOIN">
 		</div>
 	</div>
+</form>	
 </body>
 </html>
