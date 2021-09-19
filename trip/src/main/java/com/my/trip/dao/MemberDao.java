@@ -29,8 +29,8 @@ public class MemberDao {
 	SqlSessionTemplate sqlSession;
 	
 	//id,email,tel üũ
-	public int ukCheck(joinVO jVO) {
-		return sqlSession.selectOne("mSQL.ukCheck", jVO);
+	public int idCheck(String id) {
+		return sqlSession.selectOne("mSQL.idCheck", id);
 	}
 	
 	

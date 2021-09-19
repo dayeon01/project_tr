@@ -6,13 +6,16 @@
 	<mapper namespace="mSQL">
 	
 	
-	<!-- id,mail,tel 중복검사 -->
-	<select id="ukCheck" resultType="int" parameterType="jVO">
+	<!-- id 중복검사 -->
+	<select id="idCheck" resultType="int" parameterType="String">
 		SELECT
 			count(*)
 		FROM
 			member
-			<choose>
+		WHERE
+			id = #{id}	
+	</select>
+<!-- 		 	<choose>
 		<when test="id =='id'">
 			id = #{id}
 		</when>	
@@ -22,8 +25,7 @@
 		<when test="mail == 'mail'">
 			email = #{email}
 		</when>
-			</choose>		
-	</select>
+			</choose>	 -->
 	
 	
 	<!-- 회원가입 질의명령 insert-->

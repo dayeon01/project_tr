@@ -1,12 +1,15 @@
 package com.my.trip.controller.menuTop;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
@@ -39,20 +42,28 @@ public class Member {
 		return mv;
 	}
 	
-	//id,mail,tel 중복검사
-	@RequestMapping(value = "/ukCheck.tr", headers="Accept=*/*",  produces="application/json; charset=utf8")
-	@ResponseBody
-	public HashMap<String, String> ukCheck(joinVO jVO){
-		int cnt = mDao.ukCheck(jVO);
-		
+	//id 중복검사
+	//@RequestMapping(value="/ukCheck.tr",headers="Accept=*/*",produces="application/json;charset=utf8")
+	@RequestMapping(value="/idCheck.tr", method=RequestMethod.POST, params="id")
+	@ResponseBody 
+	public Map<String, String> idCheck(String id){
+		int cnt = mDao.idCheck(id);
 		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("result","NO");
-		map.put("cnt", cnt+"");
+		
+		map.put("res", "NO");
+		map.put("id", id);
 		if(cnt != 1) {
-			map.put("result","OK");
+			map.put("res", "OK");
 		}
-	System.out.println(map);
+		System.out.println("map" +map);
 		return map;
+		/*
+		 * int cnt = mDao.idCheck(id);
+		 * 
+		 * String idCheck = new idCheck(id); map.put("result","NO"); map.put("cnt",
+		 * cnt+""); if(cnt != 1) { map.put("result","OK"); } System.out.println(map);
+		 * return map;
+		 */
 	}
 	
 	@RequestMapping("/joinProc.tr")

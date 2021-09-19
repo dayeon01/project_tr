@@ -45,6 +45,7 @@
 		컨테이너 생성 시 참조하는 xml 파일에 아래와 같은 어노테이션 스캔 설정이 존재해야 한다. -->
 	<context:component-scan base-package="com.my.trip" />
 	
+	<beans:import resource="daoContext.xml" />
 	<!--  <mvc:annotation-driven /> -->
 	
 </beans:beans>

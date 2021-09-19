@@ -87,23 +87,25 @@ label{
 		
 			//id중복검사 ajax
 		$('#idCheck').click(function(){
+			var sid = $('#id').val();
 			var check = 0;
 			var request =$.ajax({
-				url: "/trip/menu_top/ukCheck.tr",
+				url: "/trip/menu_top/idCheck.tr",
 				method:"POST",
-				data:{len: $('#id').val()},
-				dataType: "json"
+				data: {
+					id: sid					
+				},
+				dataType: "json",
 			});
 			
-		request.done(function(data){
-				console.log(data);
-			if(data != undefined && data !=''){
-				if(data.result = "Y"){
-					alert('사용 가능한 아이디 입니다.');
-					check++;
-				}else{
-					alert('사용 불가능한 아이디 입니다.');
-				}
+		request.done(function(obj){
+			var res = obj.res;
+			alert('id : ' + obj.id)
+				console.log('console : ' + obj);
+			if(obj == 'OK'){
+				alert('사용가능한 아이디입니다.')
+			}else {
+				alert('사용불가능한 아이디입니다.')
 			}
 		});
 		
@@ -282,10 +284,10 @@ label{
 				<select name="emailAdd" id="emailAdd">
 					<option value="">이메일 선택</option>
 					<option value="01">naver.com</option>
-					<option value="02">hanmail.net</option>
 					<option value="03">daum.net</option>
-					<option value="04">google.com</option>
-					<option value="05">gmail.com</option>
+					<option value="02">hanmail.net</option>
+					<option value="04">gmail.com</option>
+					<option value="05">nate.com</option>
 				</select>
 			</div>
 			<div class="mgt10 mgb10 ">
