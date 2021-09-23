@@ -53,21 +53,7 @@ label{
 		$('#login').click(function(){
 			location.href="/trip/menu_top/login.tr";
 		});
-	/* 	$('#jbtn').click(function(){
-			<!-- var id = $('#id').prop('value'); -->
-			var id = $('#id').val();
-			var name = $('#name').val();
-			var resi = $('#resi').val();
-			var pw = $('#pwCheck').val();
-			var email = $('#email').val();
-			var addr1 = $('#addr1').val();
-			var addr2 = $('#addr2').val();
-			var addr3 = $('#addr3').val();
-			var tel = $('#tel').val();
-			alert(id+name+resi+pw+email+addr1+addr2+addr3+tel);
-		}); */
-		
-		
+	
 		
 		
 		//id 정규표현식
@@ -89,23 +75,26 @@ label{
 		$('#idCheck').click(function(){
 			var sid = $('#id').val();
 			var check = 0;
+			/* var form = {
+				id:"jamong",
+				pw:"22"
+			} */
 			var request =$.ajax({
 				url: "/trip/menu_top/idCheck.tr",
 				method:"POST",
-				data: {
-					id: sid					
-				},
-				dataType: "json",
+				data:{
+					id : sid
+				}
 			});
 			
-		request.done(function(obj){
-			var res = obj.res;
-			alert('id : ' + obj.id)
-				console.log('console : ' + obj);
-			if(obj == 'OK'){
-				alert('사용가능한 아이디입니다.')
+		request.done(function(data){
+			var ob = $.parseJSON(data);
+			if(data != undefined && data != ""){
+				if(ob.result == "Y")
+					alert('사용 가능한 아이디입니다.')
+					 $('#idmsg').removeClass('w3-text-orange').addClass('w3-text-green').html('ID 중복체크가 완료되었습니다.');
 			}else {
-				alert('사용불가능한 아이디입니다.')
+					 $('#idmsg').removeClass('w3-text-orange').addClass('w3-text-red').html('사용 불가능한 아이디입니다.');
 			}
 		});
 		
@@ -174,54 +163,76 @@ label{
 		})
 		
 		
-	
-		
-		
 	});
+	
+	
 	//test
-	function submit(){
+	function sub(){
 		var id = $('#id').val();
 		var name = $('#name').val();
 		var resi = $('#resi').val();
-		var pw = $('#pwCheck').val();
-		var email = $('#email').val();
+		var pw = $('#pw').val();
+		var pwCk = $('#pwCheck').val();
+		var mail = $('#email').val();
+		var mailAddr = $('#mailAddr option:selected').val();
 		var addr1 = $('#addr1').val();
 		var addr2 = $('#addr2').val();
 		var addr3 = $('#addr3').val();
 		var tel = $('#tel').val();
-		alert(id+name+resi+pw+email+addr1+addr2+addr3+tel);
 		
-		if($('#id').val() == ''){
+		if(id == ''){
 			alert('아이디를 입력하세요.');
 			return;
-		}else if($('#name').val() == ''){
-			alert('이름을 입력하세요.');
-			return;
-		}else if($('#resi').val() == ''){
-			alert('주민번호를 입력하세요');
-			return;
-		}else if($('#pw').val() == ''){
-			alert('비밀번호를 입력하세요');
-			return;
-		}else if($('#pwCheck').val() == ''){
-			alert('비밀번호 확인을 입력하세요');
-			return;
-		}else if($('#email').val() == ''){
-			alert('이메일을 입력하세요');
-			return;
-		}else if($('#emailAdd option:selected').length == 0){
-			alert('메일 주소를 선택해주세요.');
-			return;
-		}else if($('.addr').val() == ''){
-			alert('주소를 입력하세요.');
-			return;
-		}else if($('#tel').val() == ''){
-			alert('전화번호를 입력하세요.');
-			return;
-		}else{
-			alert('회원가입 완료');
 		}
-	};
+		
+		if(name == ''){
+			alert('이름을 입력하세요.')
+			return;
+		}
+		
+		if(resi == ''){
+			alert('주민번호를 입력하세요.')
+			return;
+		}
+		
+		if(pw == ''){
+			alert('비밀번호를 입력하세요.')
+			return;
+		}
+		
+		if(pwCk == ''){
+			alert('비밀번호 확인을 입력하세요.')
+			return;
+		}
+		
+		if(mail == ''){
+			alert('이메일을 입력하세요.')
+			return;
+		}
+		
+		if(mailAddr == ''){
+			alert('메일 주소를 선택하세요.')
+			return;
+		}
+		
+		if(addr1 ==''){
+			alert('우편번호를 확인하세요.')
+			return;
+		}
+		
+		if(addr3 == ''){
+			alert('상세주소를 입력하세요.')
+			return;
+		}
+		
+		if(tel == ''){
+			alert('전화번호를 입력하세요.')
+			return;
+		}
+		
+		alert(mailAddr)
+		 $('#frm').submit(); 
+	}
 	
 	
 	function jusoCallBack(roadAddrPart1,addrDetail, zipNo){
@@ -243,24 +254,24 @@ label{
 			<li class="inblock w3-left mgl20 mgr50 w3-text-purple" id="main"><strong>TRIP</strong></li>
 		</ul>
 	</div>
-<form action="/joinProc.tr" method="post" id="frm" name="frm">
+<form action="/trip/menu_top/joinProc.tr" method="post" id="frm" name="frm">
 	
 	<div class="w3-content">
 		<div class="mgt0 mgb60 mgl60 ">
 			<div class="mgt60 mgb20 w3-col">
 				<label class="mgr60">이름:</label>
-				<input type="text" class="w3-border" id="name">
+				<input type="text" class="w3-border" id="name" name="name">
 			</div>
 			<div class="mgt10 mgb20 w3-col">
 				<label class="mgr30">주민번호:</label>
-				<input type="text" class="w3-border" id="resi" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
+				<input type="text" class="w3-border" id="resi" name="resi" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
 			</div> 
 			<div class="mgt10 mgb20 w3-col">
 				<label class="mgr50">아이디:</label>
-				<input type="text" class="w3-border" id="id">
+				<input type="text" class="w3-border" id="id" name="id">
 				<input type="button" class="w3-border check" value="중복확인" id="idCheck">
 			</div>
-				<p class="mgl60 mgt0 mgb20" id="idmsg"></p>
+				<p class="mgl60 pdl50 mgt0 mgb20" id="idmsg"></p>
 			<div class="w3-col">
 				<label class="mgt10 mgr40 mgb30">비밀번호:</label>
 				<input type="password" class="w3-border password" style="position:relative; left:-8px;" id="pw">
@@ -268,7 +279,7 @@ label{
 			</div>
 			<div class="w3-col mgt20 mgb10">
 				<label class="mgr10">비밀번호 확인:</label>
-				<input type="password" class="w3-border password" style="position:relative; left:-8px;" id="pwCheck">
+				<input type="password" class="w3-border password" style="position:relative; left:-8px;" id="pwCheck" name="pw">
 			</div>
 			
 			<div class="w3-col ">
@@ -279,33 +290,33 @@ label{
 			
 			<div class="mgt10 mgb20 inblock">
 				<label class="mgr50">이메일:</label>
-				<input type="email" class="w3-border" id="email">
+				<input type="email" class="w3-border" id="email" name="mail">
 				<label >@</label>
-				<select name="emailAdd" id="emailAdd">
+				<select name="mailaddr" id="mailAddr">
 					<option value="">이메일 선택</option>
-					<option value="01">naver.com</option>
-					<option value="03">daum.net</option>
-					<option value="02">hanmail.net</option>
-					<option value="04">gmail.com</option>
-					<option value="05">nate.com</option>
+					<option value="10">naver.com</option>
+					<option value="20">daum.net</option>
+					<option value="30">hanmail.net</option>
+					<option value="40">gmail.com</option>
+					<option value="50">nate.com</option>
 				</select>
 			</div>
 			<div class="mgt10 mgb10 ">
 				<label class="mgr10">주소:</label>
-				<input type="text" name="addr1"class="w3-border mgl50 addr"  id="addr1">
+				<input type="text" name="addr1"class="w3-border mgl50 addr"  id="addr1" name="addr1">
 				<input type="button" value="우편번호" id="addrBtn" placeholder="우편번호">
 			</div>
 			<div class="mgt10 mgb10 mgl60 pdl40">
-				<input type="text" name="addr2" class="w3-border addr" id="addr2">
-				<input type="text" name="addr3" class="w3-border addr" id="addr3">
+				<input type="text" name="addr2" class="w3-border addr" id="addr2" name="addr2">
+				<input type="text" name="addr3" class="w3-border addr" id="addr3" name="addr3">
 			</div>
 			<div class="mgt10 mgb20 w3-col">
 				<label class="mgr30">전화번호:</label>
-				<input type="text" class="w3-border" id="tel" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
+				<input type="text" class="w3-border" id="tel" name="tel" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
 			</div>
 		</div>
 		<div class="inblock mgl60 mgt20">
-			<input type="button" onclick="submit()" id="jbtn" value="JOIN">
+			<input type="button" onclick="sub()" id="jbtn" value="JOIN">
 		</div>
 	</div>
 </form>	

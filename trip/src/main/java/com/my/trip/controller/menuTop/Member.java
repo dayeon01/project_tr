@@ -1,19 +1,18 @@
 package com.my.trip.controller.menuTop;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.google.gson.Gson;
 import com.my.trip.dao.MemberDao;
 import com.my.trip.vo.joinVO;
 
@@ -44,8 +43,8 @@ public class Member {
 	
 	//id 중복검사
 	//@RequestMapping(value="/ukCheck.tr",headers="Accept=*/*",produces="application/json;charset=utf8")
-	@RequestMapping(value="/idCheck.tr", method=RequestMethod.POST, params="id")
-	@ResponseBody 
+	//@RequestMapping(value="/idCheck.tr", method=RequestMethod.POST, params="id")
+	/*
 	public Map<String, String> idCheck(String id){
 		int cnt = mDao.idCheck(id);
 		HashMap<String, String> map = new HashMap<String, String>();
@@ -57,14 +56,16 @@ public class Member {
 		}
 		System.out.println("map" +map);
 		return map;
-		/*
-		 * int cnt = mDao.idCheck(id);
-		 * 
-		 * String idCheck = new idCheck(id); map.put("result","NO"); map.put("cnt",
-		 * cnt+""); if(cnt != 1) { map.put("result","OK"); } System.out.println(map);
-		 * return map;
-		 */
+	*/	
+	@RequestMapping(value="/idCheck.tr", method=RequestMethod.POST)
+	@ResponseBody 
+	public String list(joinVO jVO) throws Exception{
+		System.out.println(jVO.getId());
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("result","Y");
+		return new Gson().toJson(map);
 	}
+	
 	
 	@RequestMapping("/joinProc.tr")
 	//회원가입 요청처리
@@ -73,17 +74,43 @@ public class Member {
 		 * if(isLogin(session)) { rv.setUrl("/trip/main.tr"); mv.setView(rv); return mv;
 		 * }
 		 */
-		int cnt = mDao.joinMember(jVO);
+		if(isLogin(session)) {
+			rv.setUrl("/trip/main/main.tr");
+			mv.setView(rv);
+			return mv;
+		}
+		System.out.println("JVO" + jVO);
 		
+		int cnt = mDao.joinMember(jVO);
 		if(cnt == 1) {
 			session.setAttribute("SID", jVO.getId());
-			rv.setUrl("/trip/login.tr");
+			rv.setUrl("/trip/menu_top/login.tr");
 		}else {
-			rv.setUrl("/trip/join.tr");
+			rv.setUrl("/trip/menu_top/join.tr");
 		}
 		mv.setView(rv);
 		return mv;
 		
+	}
+	
+	//로그인
+	@RequestMapping("/loginProc.tr")
+	public ModelAndView loginProc(ModelAndView mv, joinVO jVO, HttpSession session, RedirectView rv) {
+		String view = "/trip/main/main.tr";
+		if(!isLogin(session)) {
+			int cnt = mDao.getLogin(jVO);
+			if(cnt == 1) {
+				session.setAttribute("SID", jVO.getId());
+			} else {
+				mv.addObject("MSG","false");
+				mv.setViewName("menu_top/login");
+				return mv;
+			}
+		}
+		rv.setUrl(view);
+		mv.setView(rv);
+		
+		return mv;
 	}
 	
 	

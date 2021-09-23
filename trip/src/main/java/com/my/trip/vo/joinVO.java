@@ -1,12 +1,10 @@
 package com.my.trip.vo;
 
-import java.sql.Date;
 
 public class joinVO {
 
-	private int mno;
-	private String name, id, pw, tel, mail, addr1, addr2, addr3, joindate;
-	private Date jdate;
+	private int mno, mailaddr;
+	private String name, id, pw, tel, mail, addr1, addr2, addr3, jdate;
 	public int getMno() {
 		return mno;
 	}
@@ -43,6 +41,13 @@ public class joinVO {
 	public void setMail(String mail) {
 		this.mail = mail;
 	}
+	
+	public int getMailaddr() {
+		return mailaddr;
+	}
+	public void setMailaddr(int mailaddr) {
+		this.mailaddr = mailaddr;
+	}
 	public String getAddr1() {
 		return addr1;
 	}
@@ -61,17 +66,25 @@ public class joinVO {
 	public void setAddr3(String addr3) {
 		this.addr3 = addr3;
 	}
-	public String getJoindate() {
-		return joindate;
-	}
-	public void setJoindate(String joindate) {
-		this.joindate = joindate;
-	}
-	public Date getJdate() {
+	
+	public String getJdate() {
 		return jdate;
 	}
-	public void setJdate(Date jdate) {
+	public void setJdate(String jdate) {
 		this.jdate = jdate;
+	}
+	/*
+	 * public String setStrDate(Date d) { return new
+	 * SimpleDateFormat("yyyy/MM/dd").format(d); } public String getJoindate() {
+	 * return joindate; } public void setJoindate(String jdate) { joindate = jdate;
+	 * } public Date getJdate() { return jdate; } public void setJdate(Date jdate) {
+	 * this.jdate = jdate; }
+	 */
+	@Override
+	public String toString() {
+		return "joinVO [mno=" + mno + ", name=" + name + ", id=" + id + ", pw=" + pw + ", tel=" + tel + ", mail=" + mail
+				+ ", addr1=" + addr1 + ", addr2=" + addr2 + ", addr3=" + addr3  + ", jdate="
+				+ jdate + "]";
 	}
 	
 	

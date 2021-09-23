@@ -28,15 +28,19 @@ public class MemberDao {
 	@Autowired
 	SqlSessionTemplate sqlSession;
 	
-	//id,email,tel 체크
+	//id 체크
 	public int idCheck(String id) {
 		return sqlSession.selectOne("mSQL.idCheck", id);
 	}
 	
-	
 	//회원가입
 	public int joinMember(joinVO jVO) {
 		return sqlSession.insert("mSQL.joinMemb", jVO);
+	}
+	
+	//로그인
+	public int getLogin(joinVO jVO) {
+		return sqlSession.selectOne("mSQL.getLogin",jVO);
 	}
 	
 }
