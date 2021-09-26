@@ -14,7 +14,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.google.gson.Gson;
 import com.my.trip.dao.MemberDao;
-import com.my.trip.vo.joinVO;
+import com.my.trip.vo.memberVO;
 
 @Controller
 @RequestMapping("/menu_top")
@@ -59,8 +59,8 @@ public class Member {
 	*/	
 	@RequestMapping(value="/idCheck.tr", method=RequestMethod.POST)
 	@ResponseBody 
-	public String list(joinVO jVO) throws Exception{
-		System.out.println(jVO.getId());
+	public String list(memberVO mVO) throws Exception{
+		System.out.println(mVO.getId());
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("result","Y");
 		return new Gson().toJson(map);
@@ -69,7 +69,7 @@ public class Member {
 	
 	@RequestMapping("/joinProc.tr")
 	//회원가입 요청처리
-	public ModelAndView joinProc(joinVO jVO, ModelAndView mv, HttpSession session, RedirectView rv) {
+	public ModelAndView joinProc(memberVO mVO, ModelAndView mv, HttpSession session, RedirectView rv) {
 		/*
 		 * if(isLogin(session)) { rv.setUrl("/trip/main.tr"); mv.setView(rv); return mv;
 		 * }
@@ -79,11 +79,11 @@ public class Member {
 			mv.setView(rv);
 			return mv;
 		}
-		System.out.println("JVO" + jVO);
+		System.out.println("mVO" + mVO);
 		
-		int cnt = mDao.joinMember(jVO);
+		int cnt = mDao.joinMember(mVO);
 		if(cnt == 1) {
-			session.setAttribute("SID", jVO.getId());
+			session.setAttribute("SID", mVO.getId());
 			rv.setUrl("/trip/menu_top/login.tr");
 		}else {
 			rv.setUrl("/trip/menu_top/join.tr");
@@ -95,24 +95,53 @@ public class Member {
 	
 	//로그인
 	@RequestMapping("/loginProc.tr")
-	public ModelAndView loginProc(ModelAndView mv, joinVO jVO, HttpSession session, RedirectView rv) {
-		String view = "/trip/main/main.tr";
+	public ModelAndView loginProc(ModelAndView mv, memberVO mVO, HttpSession session, RedirectView rv) {
+		/* String view = "/trip/main/main.tr"; */
 		if(!isLogin(session)) {
-			int cnt = mDao.getLogin(jVO);
+			int cnt = mDao.getLogin(mVO);
 			if(cnt == 1) {
-				session.setAttribute("SID", jVO.getId());
+				session.setAttribute("SID", mVO.getId());
 			} else {
 				mv.addObject("MSG","false");
 				mv.setViewName("menu_top/login");
 				return mv;
 			}
 		}
-		rv.setUrl(view);
+		/* rv.setUrl(view); */
+		mv.setViewName("main/main");
+		
+		return mv;
+	}
+	
+	
+	//로그아웃
+	@RequestMapping("/logoutProc.tr")
+	public ModelAndView logoutProc(ModelAndView mv, HttpSession session, RedirectView rv) {
+		session.removeAttribute("SID");
+		rv.setUrl("/trip/main/main.tr");
 		mv.setView(rv);
 		
 		return mv;
 	}
 	
+	
+	//내정보 보기
+	@RequestMapping("/myinfo.tr")
+	public ModelAndView myinfo(ModelAndView mv, HttpSession session, RedirectView rv) {
+		if(!isLogin(session)) {
+			rv.setUrl("/trip/menu_top/login.tr");
+			mv.setView(rv);
+			return mv;
+		}
+		String id = (String)session.getAttribute("SID");
+		memberVO mVO = mDao.myinfo(id);
+		System.out.println("id : "+ id);
+		mv.addObject("DATA",mVO);
+		System.out.println("mVO : "+ mVO);
+		mv.setViewName("menu_top/myinfo");
+		
+		return mv;
+	}
 	
 	// 로그인 검사
 		public boolean isLogin(HttpSession session) {

@@ -27,20 +27,20 @@
 			</choose>	 -->
 
 <!-- 로그인 -->
-	<select id="getLogin" resultType="int" parameterType="jVO">
+	<select id="getLogin" resultType="int" parameterType="mVO">
 		SELECT
 			count(*)
 		FROM
 			member
 		WHERE
 			isshow = 'Y'
-			AND id=#{id}
-			AND pw=#{pw}		
+			AND id = #{id}
+			AND pw = #{pw}		
 	</select>
 	
 	
 	<!-- 회원가입 질의명령 insert-->
-	<insert id="joinMemb" parameterType="jVO">
+	<insert id="joinMemb" parameterType="mVO">
 		<selectKey keyProperty="mno" resultType="int" order="BEFORE">
 			SELECT
 				NVL(MAX(mno) + 1, 10001)
@@ -53,6 +53,18 @@
 			#{mno}, #{name}, #{id}, #{pw}, #{tel}, #{mail}, #{mailaddr}, #{addr1}, #{addr2}, #{addr3}
 		)	
 	</insert> 
+	
+	<!-- 내정보 조회 -->
+	<select id="myinfo" parameterType="String" resultType="mVO">
+		SELECT
+			name,id, tel, mail, mailaddr, addr1, addr2, addr3, jdate
+		
+		FROM
+			member
+		WHERE
+			isshow = 'Y'
+			AND id=#{id}
+	</select>
 	
 	</mapper>
 	

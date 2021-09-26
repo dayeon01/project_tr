@@ -1,7 +1,7 @@
 package com.my.trip.vo;
 
 
-public class joinVO {
+public class memberVO {
 
 	private int mno, mailaddr;
 	private String name, id, pw, tel, mail, addr1, addr2, addr3, jdate;

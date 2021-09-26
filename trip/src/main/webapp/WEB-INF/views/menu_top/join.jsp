@@ -44,8 +44,8 @@ label{
 	$(document).ready(function(){
 		$('.ms').css("display","none");
 		
-		$('#main').click(function(){
-			$('#main').submit();
+		$('.trip').click(function(){
+			location.href="/trip/main/main.tr";
 		});
 		$('#join').click(function(){
 			location.href="/trip/menu_top/join.tr";
@@ -251,7 +251,7 @@ label{
 			<li class="inblock w3-right mgl20 mgr50">예약확인/결제</li>
 			<li class="inblock w3-right mgl20 mgr50" id="join">회원가입</li>
 			<li class="inblock w3-right mgl20 mgr50" id="login">로그인</li>
-			<li class="inblock w3-left mgl20 mgr50 w3-text-purple" id="main"><strong>TRIP</strong></li>
+			<li class="inblock w3-left mgl20 mgr50 w3-text-purple trip" id="main"><strong>TRIP</strong></li>
 		</ul>
 	</div>
 <form action="/trip/menu_top/joinProc.tr" method="post" id="frm" name="frm">

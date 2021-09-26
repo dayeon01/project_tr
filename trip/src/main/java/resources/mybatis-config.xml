@@ -14,7 +14,7 @@
 	
 	<!-- 마이바티스에서 사용할 자바 VO 파일 별칭 선언 -->
 	 <typeAliases>
-		<typeAlias alias="jVO" type="com.my.trip.vo.joinVO" />
+		<typeAlias alias="mVO" type="com.my.trip.vo.memberVO" />
 	<!-- 
 		<typeAlias alias="file" type="com.biz.choi.util.FileUtil" />
 		<typeAlias alias="page" type="com.biz.choi.util.PageUtil" />
